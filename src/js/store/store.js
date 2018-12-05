@@ -1,7 +1,8 @@
 const getState = (scope) => {
     return {
         store: {
-            //Your data structures, A.K.A Entities
+        //this is where your store data lives
+        
         },
         actions: {
             //(Arrow) Functions that update the Store

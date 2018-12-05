@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Contacts from "./views/Contacts.jsx";
 import AddContact from "./views/AddContact.jsx";
+import Store from "./store/appContext.jsx";
 
-export default class Layout extends React.Component {
+export class Layout extends React.Component {
     render() {
         return (
             <div>
@@ -23,3 +24,5 @@ export default class Layout extends React.Component {
         );
     }
 }
+
+export default Store(Layout);
