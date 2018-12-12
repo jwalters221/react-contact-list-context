@@ -1,6 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Context } from "../store/appContext.jsx";
 
 class Modal extends React.Component{
     constructor(){
@@ -25,11 +26,25 @@ class Modal extends React.Component{
                             }
                         </div>
                         <div className="modal-body">
-                            <p>Warning: unknown consequences after this point... Kidding!</p>
+                            <p>This will remove the contact forever!! ID: {this.props.id}</p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-primary">Oh no!</button>
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Do it!</button>
+                            {/*<button type="button" className="btn btn-primary">Oh no!</button>*/}
+                            <Context.Consumer>
+                                {({ actions }) => {
+                                let id = this.props.id;
+                                return(
+                                    <button 
+                                    type="button" 
+                                    className="btn btn-primary" 
+                                    data-dismiss="modal" 
+                                    onClick={() => actions.deleteContact(this.props.history, id, this.props.onClose())}
+                                    >
+                                    Do it!
+                                    </button>
+                                    );
+                                }}
+                            </Context.Consumer>    
                         </div>
                     </div>
                 </div>
@@ -45,7 +60,8 @@ class Modal extends React.Component{
 Modal.propTypes = {
     history: PropTypes.object,
     onClose: PropTypes.func,
-    show: PropTypes.bool
+    show: PropTypes.bool,
+    id: PropTypes.number
 };
 
 /**
