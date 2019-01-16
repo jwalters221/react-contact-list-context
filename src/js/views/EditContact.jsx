@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext.jsx";
+import {withRouter} from 'react-router-dom';
 
 export default class EditContacts extends React.Component {
     render() {
@@ -12,12 +13,13 @@ export default class EditContacts extends React.Component {
                     <Context.Consumer>
                         {({ store, actions }) => {
                         let id = this.props.match.params.id;
+                        let APIid = store.contacts[id].id;
                             return(                    
                                 <form>
                                     <div className="form-group">
                                         <label>Full Name</label>
                                         <input id="nameInput" type="text" className="form-control" placeholder="Full Name"
-                                        defaultValue={store.contacts[id].name}/>
+                                        defaultValue={store.contacts[id].full_name}/>
                                     </div>
                                     <div className="form-group">
                                         <label>Email</label>
@@ -35,7 +37,7 @@ export default class EditContacts extends React.Component {
                                         defaultValue={store.contacts[id].address}/>
                                     </div>
                                     <button type="button" 
-                                    onClick={() => actions.updateContact(this.props.history, id, 
+                                    onClick={() => actions.updateContact(this.props.history, APIid, 
                                     document.querySelector('#nameInput').value,
                                     document.querySelector('#emailInput').value,
                                     document.querySelector('#phoneInput').value,

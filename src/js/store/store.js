@@ -3,7 +3,7 @@ let imageFilepath = 'http://demos.themes.guide/bodeo/assets/images/users/';
 const getState = (scope) => {
     return {
         store: {
-            contacts: [
+            contacts: [/*
                 {
                     name: "John Smith",
                     address: "2221 Biscayne Blvd.",
@@ -38,18 +38,55 @@ const getState = (scope) => {
                     email: "cspence@gmail.com",
                     phone: "213-555-7721",
                     image: imageFilepath + "w102.jpg"
-                }                    
+                }    */                
                 ]
         },
         actions: {
-			updateContact: (history, index, name, email, phone, address) => {
+			updateContact: (history, APIid, name, email, phone, address) => {
 				let store = scope.state.store;
+				/*
 				store.contacts[index].name = name;
 				store.contacts[index].email = email;
 				store.contacts[index].phone = phone;
 				store.contacts[index].address = address;
 				scope.setState({ store });
-				history.push('/');
+				*/
+				
+            fetch("https://assets.breatheco.de/apis/fake/contact/" + APIid, {
+                method: 'POST',
+                headers: {
+                  "Content-type": "application/json;charset=utf-8"
+                },
+                body:   JSON.stringify({
+                        "full_name": name,
+                        "email": email,
+                        "agenda_slug": "downtown_vi",
+                        "address": address,
+                        "phone": phone
+                })
+              })
+              .then(response => response.json())
+              //.then(myJson => alert(JSON.stringify(myJson)))
+              .then(getUpdatedData => {
+                  fetch('https://assets.breatheco.de/apis/fake/contact/agenda/downtown_vi')
+                  .then(response => response.json())
+                   // .then(myJson => alert(JSON.stringify(myJson))
+                  .then(data => {
+                      let store = scope.state.store;
+                      store.contacts = data;
+                      scope.setState({ store });
+                    })
+                    
+                  .then(update => {
+                      history.push('/');
+                  });
+              })
+
+              .catch(error => {
+                    alert(error);
+              });             
+				
+				
 			},
 			addContact: (history, index, name, email, phone, address) => {
 				let store = scope.state.store;
